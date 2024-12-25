@@ -1,0 +1,30 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@svgr/webpack": "^8.1.0",
+    "axios": "^1.7.9",
+    "cookies-next": "^5.0.2",
+    "js-cookie": "^3.0.5",
+    "lucide-react": "^0.469.0",
+    "next": "15.1.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sass": "^1.83.0",
+    "sonner": "^1.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/webpack": "^5.28.5",
+    "typescript": "^5"
+  }
+}

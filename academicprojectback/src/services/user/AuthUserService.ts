@@ -14,15 +14,24 @@ class AuthUserService {
             }
         })
         if (!user) {
-            throw new Error("User/Password incorreto")
+            return {
+                retorno: 200,
+                message: "Usuário não encontrado/Senha inválida"
+            };
         }
         //verificar senha está correta
         const senhaOK = await compare(password, user.senhaUsuario)
         if (!senhaOK) {
-            throw new Error("User/Password incorreto")
+            return {
+                retorno: 210,
+                message: "Usuário não encontrado/Senha inválida"
+            };
         }
         if (!user.usuarioAtivo) {
-            throw new Error("Ative seu usuario")
+            return {
+                retorno: 220,
+                message: "Usuário inativo"
+            };
         }
         //Se Usuario OK: gerar TOKEN para usuário
         
@@ -38,11 +47,16 @@ class AuthUserService {
             }
         )
         return {
-            id:user.usuarioID,
-            email:user.emailUsuario,
-            papel:user.papelID,
-            token:token
+		
+            retorno: 100,
+            message: "OK",
+            data: {
+                id: user.usuarioID,
+                email: user.emailUsuario,
+                papel: user.papelID,
+                token: token
         }
     }
+	}
 }
 export { AuthUserService }
