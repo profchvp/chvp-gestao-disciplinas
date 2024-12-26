@@ -12,6 +12,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model Papel {
   papelID       Int       @id @default(autoincrement())
   nomePapel     String
@@ -20,46 +21,101 @@ model Papel {
   usuarios      Usuario[]
 }
 
-
 model Usuario {
-  usuarioID      Int       @id @default(autoincrement())
-  emailUsuario   String    @unique
-  senhaUsuario   String
-  usuarioAtivo   Boolean
-  papelID        Int
-  papel          Papel     @relation(fields: [papelID], references: [papelID])
-  alunos         Aluno[]
-  professor      Professor?
+  usuarioID     Int       @id @default(autoincrement())
+  emailUsuario  String    @unique
+  senhaUsuario  String
+  usuarioAtivo  Boolean
+  papelID       Int
+  papel         Papel     @relation(fields: [papelID], references: [papelID])
+  alunos        Aluno[]
+  professor     Professor?
 }
-
 
 model Disciplina {
-  disciplinaID         Int      @id @default(autoincrement())
-  nomeDisciplina       String
-  nomeCursoDisciplina  String
-  nomeTurma            String
-  turnoTurma           String
-  alunos               Aluno[]
-  professor            Professor @relation(fields: [professorID], references: [professorID])
-  professorID          Int       @unique
+  disciplinaID       Int       @id @default(autoincrement())
+  nomeDisciplina     String
+  nomeCursoDisciplina String
+  nomeTurma          String
+  turnoTurma         String
+  alunos             Aluno[]
+  professorID        Int
+  professor          Professor @relation(fields: [professorID], references: [professorID])
+  projetos           Projeto[]
 }
-
-
 model Aluno {
-  alunoID      Int      @id @default(autoincrement())
-  nomeAluno    String
-  urlGitHub    String
-  usuarioID    Int
-  disciplinaID Int
-  usuario      Usuario   @relation(fields: [usuarioID], references: [usuarioID])
-  disciplina   Disciplina @relation(fields: [disciplinaID], references: [disciplinaID])
+  alunoID       Int       @id @default(autoincrement())
+  nomeAluno     String
+  urlGitHub     String
+  usuarioID     Int
+  disciplinaID  Int
+  usuario       Usuario   @relation(fields: [usuarioID], references: [usuarioID])
+  disciplina    Disciplina @relation(fields: [disciplinaID], references: [disciplinaID])
+  equipes       AlunoEquipe[]
 }
 
 
 model Professor {
-  professorID    Int      @id @default(autoincrement())
-  nomeProfessor  String
-  usuarioID      Int      @unique
-  usuario        Usuario  @relation(fields: [usuarioID], references: [usuarioID])
-  disciplinas    Disciplina[]
+  professorID   Int       @id @default(autoincrement())
+  nomeProfessor String
+  usuarioID     Int       @unique
+  usuario       Usuario   @relation(fields: [usuarioID], references: [usuarioID])
+  disciplinas   Disciplina[]
+}
+
+model PeriodoAcademico {
+  periodoID           Int       @id @default(autoincrement())
+  tipoPeriodoAcademico String
+  anoSemestre         String
+  projetos            Projeto[]
+}
+
+model Projeto {
+  projetoID           Int       @id @default(autoincrement())
+  descricao           String
+  periodoAcademicoID  Int
+  periodoAcademico    PeriodoAcademico @relation(fields: [periodoAcademicoID], references: [periodoID])
+  calendarioAcademico CalendarioAcademico?
+  equipes             Equipe[]
+  disciplinaID        Int
+  disciplina          Disciplina @relation(fields: [disciplinaID], references: [disciplinaID])
+}
+
+model CalendarioAcademico {
+  calendarioID        Int       @id @default(autoincrement())
+  descricao           String
+  projetoID           Int       @unique
+  projeto             Projeto   @relation(fields: [projetoID], references: [projetoID])
+  datasCalendario     DatasCalendario[]
+}
+
+model DatasCalendario {
+  dataID              Int       @id @default(autoincrement())
+  dataEvento          DateTime
+  descricaoEvento     String
+  calendarioID        Int
+  calendarioAcademico CalendarioAcademico @relation(fields: [calendarioID], references: [calendarioID])
+}
+
+model Equipe {
+  equipeID            Int       @id @default(autoincrement())
+  nomeEquipe          String
+  alunoID             Int
+  professorID         Int
+  temaProjeto         String
+  descricaoProjeto    String
+  gitHubEquipe        String
+  projetoID           Int
+  projeto             Projeto   @relation(fields: [projetoID], references: [projetoID])
+  alunos              AlunoEquipe[]
+}
+
+model AlunoEquipe {
+  alunoEquipeID Int       @id @default(autoincrement())
+  alunoID       Int
+  equipeID      Int
+  papeis        String
+  criacao       DateTime? @default(now())
+  aluno         Aluno     @relation(fields: [alunoID], references: [alunoID])
+  equipe        Equipe    @relation(fields: [equipeID], references: [equipeID])
 }
