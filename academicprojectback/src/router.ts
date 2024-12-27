@@ -9,6 +9,7 @@ import { CreateEquipeController } from './controllers/crud/CreateEquipeControlle
 import { CreateAlunoEquipeController } from './controllers/crud/CreateAlunoEquipeController';
 import { CreateCalendarioAcademicoController } from './controllers/crud/CreateCalendarioAcademicoController';
 import { CreateDatasCalendarioController } from './controllers/crud/CreateDatasCalendarioController';
+import { PapelUserController } from './controllers/user/PapelUserController';
 
 import { isAuthenticated } from './middlewares/isAuthenticated';
 const router = Router();
@@ -26,4 +27,5 @@ router.post('/equipe',new CreateEquipeController().handle)
 router.post('/alunoequipe',new CreateAlunoEquipeController().handle)
 router.post('/calendarioacademico',new CreateCalendarioAcademicoController().handle)
 router.post('/datascalendario',new CreateDatasCalendarioController().handle)
+router.post('/papelusuario',new PapelUserController().handle)
 export {router};

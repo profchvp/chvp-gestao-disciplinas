@@ -1,12 +1,21 @@
-
+"use client"
 import Link from 'next/link';
 import styles from '../page.module.scss'
+import logoImg from './public/logo1.svg'
+import Image from 'next/image'
 export default function signup() {
+  
   return (
+    
     <>
 
       <div className={styles.containerCenter} >
-        LOGO
+      <Image
+                              alt="Logo"
+                              src="/logo1.svg" // Caminho absoluto
+                              width={65} // Largura
+                              height={65} // Altura
+                          />
      
       <section className={styles.login}>
         <h1>Criando sua Conta</h1>
@@ -15,7 +24,7 @@ export default function signup() {
             type="email"
             required
             name="email"
-            placeholder='Digite seu email...'
+            placeholder='Digite seu emailx...'
             className={styles.input}
           />
           <input

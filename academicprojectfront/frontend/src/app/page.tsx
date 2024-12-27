@@ -13,7 +13,49 @@ import { useRouter } from 'next/router'; // Importação para redirecionamento c
 export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
 
+  async function checkUserRole(papel_ID: number,token:string) {
+    try {
 
+      const papelResponse = await api.post("/papelusuario", {
+         papelID: papel_ID });
+
+
+      if (papelResponse && papelResponse.data) {
+        const { error, data: papelData, message: papelMessage } = papelResponse.data;
+
+        if (!error) {
+          if (papelData.nivelPapel === 2) {
+            const expressTime = 60 * 60 * 24 * 30 * 1000;
+            // Salva o token no cookie usando js-cookie
+            Cookies.set("session_aluno", token, {
+              expires: expressTime, // Define a expiração em dias
+              path: "/",
+              secure: process.env.NODE_ENV === "production", // Somente HTTPS em produção
+            });
+            // console.log('Token armazenado no cookie:', data.token);
+            window.location.href = "/aluno";
+          } else {
+            const expressTime = 60 * 60 * 24 * 30 * 1000;
+            // Salva o token no cookie usando js-cookie
+            Cookies.set("session_admin", token, {
+              expires: expressTime, // Define a expiração em dias
+              path: "/",
+              secure: process.env.NODE_ENV === "production", // Somente HTTPS em produção
+            });
+            // console.log('Token armazenado no cookie:', data.token);
+            window.location.href = "/admin";
+          }
+        } else {
+          toast.error(papelMessage);
+        }
+      } else {
+        toast.error("Resposta da API de papel em formato inesperado");
+      }
+    } catch (err) {
+      console.error('Erro ao verificar papel do usuário:', err);
+      toast.error("Erro ao verificar papel do usuário");
+    }
+  }
   async function handleLogin(formData: FormData) {
     const email = formData.get("email");
     const password = formData.get("password");
@@ -26,7 +68,7 @@ export default function Page() {
         senhaUsuario: password
       });
 
-      console.log('Resposta da API:', response);
+      //console.log('Resposta da API:', response);
 
       // Verifique se a resposta está no formato esperado
       if (response && response.data) {
@@ -34,20 +76,13 @@ export default function Page() {
 
         if (retorno === 100) {
           //console.log('Dados do usuário:', data);
-          //console.log('Redirecionando para /home');
-          const expressTime = 60 * 60 * 24 * 30 * 1000;
-           // Salva o token no cookie usando js-cookie
-           Cookies.set("session", data.token, {
-            expires: expressTime, // Define a expiração em dias
-            path: "/",
-            secure: process.env.NODE_ENV === "production", // Somente HTTPS em produção
-          });
+          //console.log('Redirecionando para /aluno');
+                   //console.log('Redirecionando para /aluno');
 
-          console.log('Token armazenado no cookie:', data.token);
-          console.log('Redirecionando para /home');
-          window.location.href = "/home"; // Redirecionamento usando window.location
-          return; // Certifique-se de sair da função após o redirecionamento
-
+          //window.location.href = "/aluno"; // Redirecionamento usando window.location
+          //return; // Certifique-se de sair da função após o redirecionamento
+          // Chama a função para verificar o papel do usuário
+          await checkUserRole(data.papel, data.token);
         } else {
           toast.error(message);
           setIsLoading(false);
@@ -70,7 +105,12 @@ export default function Page() {
   return (
     <>
       <div className={styles.containerCenter}>
-        LOGO
+        <Image
+          alt="Logo"
+          src="/logo1.svg" // Caminho absoluto
+          width={100} // Largura
+          height={100} // Altura
+        />
 
         <section className={styles.login}>
           <form onSubmit={(e) => {

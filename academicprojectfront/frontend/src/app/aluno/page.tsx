@@ -1,4 +1,4 @@
-export default function home(){
+export default function aluno(){
     return(
         <>
         <h1>HOME</h1>

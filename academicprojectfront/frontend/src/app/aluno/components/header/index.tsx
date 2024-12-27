@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation'
 export function Header() {
     const router = useRouter();
     async function handleLogout() {
-        deleteCookie("session", { path: "/" })
+        deleteCookie("session_aluno", { path: "/" })
         router.replace("/");
     }
     return (
@@ -18,9 +18,9 @@ export function Header() {
                 <Link href="/home">
                     <Image
                         alt="Logo"
-                        src="/Rendezvous2.svg" // Caminho absoluto
-                        width={100} // Largura
-                        height={100} // Altura
+                        src="/logo1.svg" // Caminho absoluto
+                        width={65} // Largura
+                        height={65} // Altura
                     />
                 </Link>
                 <nav>
