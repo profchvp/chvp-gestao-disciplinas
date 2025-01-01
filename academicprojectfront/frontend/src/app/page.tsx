@@ -1,5 +1,8 @@
 "use client"
-import { useState } from 'react';
+//import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { NavegacaoContext } from '@/providers/navegacaoUsuario';
+
 import styles from './page.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,12 +15,19 @@ import { useRouter } from 'next/router'; // Importação para redirecionamento c
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
+  // Certifique-se de que o contexto está definido
+  const navegacaoContext = useContext(NavegacaoContext);
+  if (!navegacaoContext) {
+    throw new Error("NavegacaoContext não foi inicializado!");
+  }
+  const { inicializarNavegacao, isNavegacaoAtiva } = useContext(NavegacaoContext);
 
-  async function checkUserRole(papel_ID: number,token:string) {
+  async function checkUserRole(papel_ID: number, token: string, alunoID:number,nomeAluno:string) {
     try {
 
       const papelResponse = await api.post("/papelusuario", {
-         papelID: papel_ID });
+        papelID: papel_ID
+      });
 
 
       if (papelResponse && papelResponse.data) {
@@ -25,24 +35,27 @@ export default function Page() {
 
         if (!error) {
           if (papelData.nivelPapel === 2) {
-            const expressTime = 60 * 60 * 24 * 30 * 1000;
+            //..const expressTime = 60 * 60 * 24 * 30 * 1000;
             // Salva o token no cookie usando js-cookie
-            Cookies.set("session_aluno", token, {
-              expires: expressTime, // Define a expiração em dias
-              path: "/",
-              secure: process.env.NODE_ENV === "production", // Somente HTTPS em produção
-            });
-            // console.log('Token armazenado no cookie:', data.token);
+            //..Cookies.set("session_aluno", token, {
+            //..  expires: expressTime, // Define a expiração em dias
+            //..  path: "/",
+            //..  secure: process.env.NODE_ENV === "production", // Somente HTTPS em produção
+            //..});
+            //..console.log('Token armazenado no cookie:', token);
+
+            inicializarNavegacao(token, alunoID, nomeAluno,'aluno');
             window.location.href = "/aluno";
           } else {
-            const expressTime = 60 * 60 * 24 * 30 * 1000;
+            //...const expressTime = 60 * 60 * 24 * 30 * 1000;
             // Salva o token no cookie usando js-cookie
-            Cookies.set("session_admin", token, {
-              expires: expressTime, // Define a expiração em dias
-              path: "/",
-              secure: process.env.NODE_ENV === "production", // Somente HTTPS em produção
-            });
+            //...Cookies.set("session_admin", token, {
+            //...  expires: expressTime, // Define a expiração em dias
+            //...  path: "/",
+            //...  secure: process.env.NODE_ENV === "production", // Somente HTTPS em produção
+            //...});
             // console.log('Token armazenado no cookie:', data.token);
+            inicializarNavegacao(token, 'admin');
             window.location.href = "/admin";
           }
         } else {
@@ -68,7 +81,7 @@ export default function Page() {
         senhaUsuario: password
       });
 
-      //console.log('Resposta da API:', response);
+      console.log('Resposta da API:', response);
 
       // Verifique se a resposta está no formato esperado
       if (response && response.data) {
@@ -77,12 +90,13 @@ export default function Page() {
         if (retorno === 100) {
           //console.log('Dados do usuário:', data);
           //console.log('Redirecionando para /aluno');
-                   //console.log('Redirecionando para /aluno');
+          //console.log('Redirecionando para /aluno');
 
           //window.location.href = "/aluno"; // Redirecionamento usando window.location
           //return; // Certifique-se de sair da função após o redirecionamento
           // Chama a função para verificar o papel do usuário
-          await checkUserRole(data.papel, data.token);
+
+          await checkUserRole(data.papel, data.token, data.alunoID, data.nomeAluno);
         } else {
           toast.error(message);
           setIsLoading(false);
@@ -140,6 +154,7 @@ export default function Page() {
             Não possui uma conta? Cadastre-se
           </Link>
         </section>
+        {isNavegacaoAtiva && <p>Hello World: Navegação Ativa!</p>}
       </div>
     </>
   );

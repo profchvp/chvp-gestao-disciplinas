@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreatePeriodoAcademicoService } from '../../services/crud/CreatePeriodoAcademicoService' ;
+import { CreatePeriodoAcademicoService } from '../../services/crudCreate/CreatePeriodoAcademicoService' ;
 class CreatePeriodoAcademicoController {
     async handle(req: Request, res: Response) {
 	//console.log("chamou login");

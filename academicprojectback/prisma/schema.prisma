@@ -45,6 +45,7 @@ model Disciplina {
 }
 model Aluno {
   alunoID       Int       @id @default(autoincrement())
+  registroAluno_RA    String     @unique
   nomeAluno     String
   urlGitHub     String
   usuarioID     Int
@@ -114,7 +115,7 @@ model AlunoEquipe {
   alunoEquipeID Int       @id @default(autoincrement())
   alunoID       Int
   equipeID      Int
-  papeis        String
+  papeis        String[]
   criacao       DateTime? @default(now())
   aluno         Aluno     @relation(fields: [alunoID], references: [alunoID])
   equipe        Equipe    @relation(fields: [equipeID], references: [equipeID])

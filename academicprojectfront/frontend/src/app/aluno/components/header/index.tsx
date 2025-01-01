@@ -24,10 +24,10 @@ export function Header() {
                     />
                 </Link>
                 <nav>
-                    <Link href="/home/Equipes">
+                    <Link href="/aluno/Equipes">
                         Equipes
                     </Link>
-                    <Link href="/home/produto">
+                    <Link href="/aluno/produto">
                         Produto
                     </Link>
 

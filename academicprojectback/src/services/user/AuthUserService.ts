@@ -8,11 +8,28 @@ interface AuthRequest {
 class AuthUserService {
     async execute({ email, password }: AuthRequest) {
         //verifica se email existe
-        const user = await prismaClient.usuario.findFirst({
+        const user = await prismaClient.aluno.findFirst({
             where: {
-                emailUsuario: email
-            }
-        })
+                usuario: {
+                    emailUsuario: email, // Filtro pelo email do usuário
+                },
+            },
+            select: {
+                alunoID:true,
+                nomeAluno: true, // Recupera o nome do aluno
+                usuarioID: true, // Recupera o usuarioID
+                disciplinaID:true,
+                usuario: { // Relacionamento com a tabela Usuario
+                    select: {
+                        usuarioID: true, // ID do usuário
+                        senhaUsuario:true,
+                        usuarioAtivo:true,
+                        emailUsuario: true, // Email do usuário
+                        papelID: true, // Papel associado ao usuário
+                    },
+                },
+            },
+        });
         if (!user) {
             return {
                 retorno: 200,
@@ -20,14 +37,14 @@ class AuthUserService {
             };
         }
         //verificar senha está correta
-        const senhaOK = await compare(password, user.senhaUsuario)
+        const senhaOK = await compare(password, user.usuario.senhaUsuario)
         if (!senhaOK) {
             return {
                 retorno: 210,
                 message: "Usuário não encontrado/Senha inválida"
             };
         }
-        if (!user.usuarioAtivo) {
+        if (!user.usuario.usuarioAtivo) {
             return {
                 retorno: 220,
                 message: "Usuário inativo"
@@ -37,8 +54,9 @@ class AuthUserService {
         
         const token = sign(
             {
-                emailUsuario: user.emailUsuario,
-                papelUsuario: user.papelID
+                
+                emailUsuario: user.usuario.emailUsuario,
+                papelUsuario: user.usuario.papelID,
             },
             process.env.JWT_SECRET,
             {
@@ -51,9 +69,12 @@ class AuthUserService {
             retorno: 100,
             message: "OK",
             data: {
-                id: user.usuarioID,
-                email: user.emailUsuario,
-                papel: user.papelID,
+                idUsuario: user.usuarioID,
+                alunoID:user.alunoID,
+                nomeAluno:user.nomeAluno,
+                disciplinaID:user.disciplinaID,
+                email: user.usuario.emailUsuario,
+                papel: user.usuario.papelID,
                 token: token
         }
     }

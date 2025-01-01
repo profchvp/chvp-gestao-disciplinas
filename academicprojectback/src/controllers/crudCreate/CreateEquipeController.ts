@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateEquipeService } from '../../services/crud/CreateEquipeService';
+import { CreateEquipeService } from '../../services/crudCreate/CreateEquipeService';
 class CreateEquipeController {
     async handle(req: Request, res: Response) {
         //console.log("chamou login");

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateDisciplinaService } from '../../services/crud/CreateDisciplinaService';
+import { CreateDisciplinaService } from '../../services/crudCreate/CreateDisciplinaService';
 class CreateDisciplinaController {
     async handle(req: Request, res: Response) {
         //console.log("chamou login");
