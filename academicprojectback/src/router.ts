@@ -15,6 +15,8 @@ import { isAuthenticated } from './middlewares/isAuthenticated';
 import { DetalheEquipesController } from './controllers/cruddetalhe/DetalheEquipeController';
 import { ListAlunoEquipeController } from './controllers/crudList/ListAlunoEquipeController';
 import { CreateAlunoController } from './controllers/crudCreate/CreateAlunoController';
+import { GetAlunoEquipeController } from './controllers/crudget/GetAlunoEquipeController';
+import { TesteController } from './controllers/TesteController';
 const router = Router();
 
 router.post('/user', new CreateUserController().handle)
@@ -36,4 +38,11 @@ router.post('/papelusuario',new PapelUserController().handle)
 router.get('/equipes',new ListEquipesController().handle);
 router.post('/detalheequipe', new DetalheEquipesController().handle)
 router.post('/createaluno',new CreateAlunoController().handle)
+
+//CRUDs Get
+router.get('/getalunoequipe', new GetAlunoEquipeController().handle)
+
+
+//TESTE
+router.get('/teste', new TesteController().handle)
 export {router};

@@ -28,7 +28,7 @@ export async function middleware(req: NextRequest) {
     // Captura o cookie diretamente do NextRequest
 
     // Verifica se o token existe para aluno
-    if (pathname.startsWith("/aluno")) {
+    if (pathname.startsWith("/aluno")||pathname.startsWith("/equipes")) {
         //const token_aluno = req.cookies.get("session_aluno")?.value;
         const session_aluno = req.cookies.get("session_aluno")?.value;
         if (!session_aluno) {

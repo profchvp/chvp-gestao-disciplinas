@@ -11,9 +11,11 @@ interface Props {
     equipesx: EquipeProps[]
 }
 export function Equipes({ equipesx }: Props) {
+    
     const { isOpen, onRequestOpen } = use(EquipeContext)
     const router = useRouter();
     async function handleDetalheEquipe(equipe_id: number) {
+        toast.success(equipe_id)
         await onRequestOpen(equipe_id)
     }
 

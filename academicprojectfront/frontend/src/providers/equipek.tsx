@@ -6,6 +6,7 @@ import { createContext, ReactNode, useState } from "react"
 import { api } from '@/services/api'
 import { getCookieClient } from "@/lib/cookieClient"
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie'; // Importação da biblioteca js-cookie
 interface EquipeProps {
     equipeID: number;
@@ -42,13 +43,15 @@ export const EquipeContext = createContext({} as EquipeContextData)
 export function EquipeProvider({ children }: EquipeProviderProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [equipe, setEquipe] = useState<EquipeProps>()
+    const router = useRouter()
 
 
     async function onRequestOpen(equipe_id: number) {
+        toast.success("entrou em  onRequestOpen....")
         const token = getCookieClient();
         // alert(token)
         // alert("Fazer chamada")
-       // alert(equipe_id)
+        // alert(equipe_id)
         const response = await api.post(`/detalheequipe`, {
             equipeID: equipe_id
         });
@@ -78,6 +81,10 @@ export function EquipeProvider({ children }: EquipeProviderProps) {
             await api.post(`/alunoequipe`, data);
 
             toast.success("Filiação à equipe feita com sucesso");
+            setIsOpen(false)
+             // Redireciona para a página do aluno após o sucesso
+             router.push('/aluno');
+
         } catch (err) {
             console.error("Erro na filiação:", err);
             toast.error("Falha na filiação à equipe");
