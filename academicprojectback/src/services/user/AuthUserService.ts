@@ -19,6 +19,7 @@ class AuthUserService {
                 nomeAluno: true, // Recupera o nome do aluno
                 usuarioID: true, // Recupera o usuarioID
                 disciplinaID:true,
+                registroAluno_RA:true,
                 usuario: { // Relacionamento com a tabela Usuario
                     select: {
                         usuarioID: true, // ID do usuário
@@ -71,6 +72,7 @@ class AuthUserService {
             data: {
                 idUsuario: user.usuarioID,
                 alunoID:user.alunoID,
+                registroAluno_ID:user.registroAluno_RA,
                 nomeAluno:user.nomeAluno,
                 disciplinaID:user.disciplinaID,
                 email: user.usuario.emailUsuario,

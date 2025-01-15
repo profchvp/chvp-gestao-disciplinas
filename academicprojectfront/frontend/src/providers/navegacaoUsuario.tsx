@@ -6,7 +6,7 @@ import { createContext, useState, ReactNode } from "react";
 import Cookies from 'js-cookie'; // Importação da biblioteca js-cookie
 // Definindo o contexto
 interface NavegacaoContextData {
-  inicializarNavegacao: (token: string, alunoID: number, nomeAluno: string, perfil: string) => void;
+  inicializarNavegacao: (token: string, alunoID: number, nomeAluno: string, perfil: string, registroAluno_ID:string) => void;
   isNavegacaoAtiva: boolean;
 }
 
@@ -21,13 +21,16 @@ export const NavegacaoProvider = ({ children }: NavegacaoProviderProps) => {
   const [isNavegacaoAtiva, setIsNavegacaoAtiva] = useState(false);
 
   // Função para inicializar a navegação
-  const inicializarNavegacao = (token: string, alunoID: number, nomeAluno: string, peril: string) => {
+  const inicializarNavegacao = (token: string, alunoID: number, nomeAluno: string, perfil: string, registroAluno_ID:string) => {
     setIsNavegacaoAtiva(true);
     const expressTime = 60 * 60 * 24 * 30 * 1000;
-    if (peril === 'aluno') {
+    //alert(perfil)
+    //alert(registroAluno_ID)
+    if (perfil === 'aluno') {
       const sessionData = {
         alunoID,
         nomeAluno,
+        registroAluno_ID,
         token
       };
       // Salva o token no cookie usando js-cookie

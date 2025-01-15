@@ -5,14 +5,20 @@ import Image from 'next/image'
 import { LogOutIcon } from 'lucide-react'
 import { deleteCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
-
-export function Header() {
+import { AlunoNavegacaoPropsx } from '@/lib/alunonavegacao.types'
+interface Props{
+    alunonavegacao:AlunoNavegacaoPropsx
+}
+//----------------------"AlunoNavegação" é passado no "Header" do componente "AppLayout" que está em "layout.tsx" 
+export function Header({AlunoNavegacao}:Props) {
+   
     const router = useRouter();
     async function handleLogout() {
         deleteCookie("session_aluno", { path: "/" })
         router.replace("/");
     }
     return (
+        
         <header className={styles.headerContainer}>
             <div className={styles.headerContent}>
                 <Link href="/home">
@@ -23,6 +29,10 @@ export function Header() {
                         height={65} // Altura
                     />
                 </Link>
+                <div>
+                    <span className={styles.headerIdAluno}>Aluno: {AlunoNavegacao.registroAluno_ID}-</span>
+                    <span className={styles.headerIdAluno}>{AlunoNavegacao.nomeAluno}</span>
+                </div>
                 <nav>
                     <Link href="/aluno/Equipes">
                         Equipes

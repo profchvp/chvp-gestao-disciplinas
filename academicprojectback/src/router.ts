@@ -16,7 +16,15 @@ import { DetalheEquipesController } from './controllers/cruddetalhe/DetalheEquip
 import { ListAlunoEquipeController } from './controllers/crudList/ListAlunoEquipeController';
 import { CreateAlunoController } from './controllers/crudCreate/CreateAlunoController';
 import { GetAlunoEquipeController } from './controllers/crudget/GetAlunoEquipeController';
+import { GetEquipeController } from './controllers/crudget/GetEquipeController';
+import { GetComposicaoEquipeController } from './controllers/crudget/GetComposicaoEquipeController';
+import { GetDatasProjetoController } from './controllers/crudget/GetDatasProjetoController';
+
+
 import { TesteController } from './controllers/TesteController';
+import { UserReadController } from './controllers/user/UserReadController';
+
+
 const router = Router();
 
 router.post('/user', new CreateUserController().handle)
@@ -39,8 +47,13 @@ router.get('/equipes',new ListEquipesController().handle);
 router.post('/detalheequipe', new DetalheEquipesController().handle)
 router.post('/createaluno',new CreateAlunoController().handle)
 
+
 //CRUDs Get
 router.get('/getalunoequipe', new GetAlunoEquipeController().handle)
+router.get('/getcomposicaoequipe', new GetComposicaoEquipeController().handle)
+router.get('/getusuario',new UserReadController().handle)
+router.get('/getequipe',new GetEquipeController().handle)
+router.get('/getadatasprojeto',new GetDatasProjetoController().handle)
 
 
 //TESTE

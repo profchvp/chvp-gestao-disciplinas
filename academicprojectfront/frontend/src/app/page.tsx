@@ -22,7 +22,7 @@ export default function Page() {
   }
   const { inicializarNavegacao, isNavegacaoAtiva } = useContext(NavegacaoContext);
 
-  async function checkUserRole(papel_ID: number, token: string, alunoID:number,nomeAluno:string) {
+  async function checkUserRole(papel_ID: number, token: string, alunoID:number,nomeAluno:string, registroAluno_ID:string) {
     try {
 
       const papelResponse = await api.post("/papelusuario", {
@@ -34,7 +34,7 @@ export default function Page() {
         const { error, data: papelData, message: papelMessage } = papelResponse.data;
 
         if (!error) {
-          if (papelData.nivelPapel === 2) {
+          if (papelData.nivelPapel === 3) {
             //..const expressTime = 60 * 60 * 24 * 30 * 1000;
             // Salva o token no cookie usando js-cookie
             //..Cookies.set("session_aluno", token, {
@@ -44,7 +44,8 @@ export default function Page() {
             //..});
             //..console.log('Token armazenado no cookie:', token);
 
-            inicializarNavegacao(token, alunoID, nomeAluno,'aluno');
+            inicializarNavegacao(token, alunoID, nomeAluno, 'aluno',registroAluno_ID,);
+            
             window.location.href = "/aluno";
           } else {
             //...const expressTime = 60 * 60 * 24 * 30 * 1000;
@@ -96,7 +97,7 @@ export default function Page() {
           //return; // Certifique-se de sair da função após o redirecionamento
           // Chama a função para verificar o papel do usuário
 
-          await checkUserRole(data.papel, data.token, data.alunoID, data.nomeAluno);
+          await checkUserRole(data.papel, data.token, data.alunoID, data.nomeAluno, data.registroAluno_ID);
         } else {
           toast.error(message);
           setIsLoading(false);

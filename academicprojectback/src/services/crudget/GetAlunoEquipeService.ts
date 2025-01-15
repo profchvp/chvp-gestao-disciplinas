@@ -10,6 +10,12 @@ class GetAlunoEquipeService {
         const alunoEquipeAlreadyExists = await prismaClient.alunoEquipe.findFirst({
             where: {
                 alunoID: alunoID
+            },
+            select:{
+                alunoEquipeID:true,
+                alunoID:true,
+                equipeID:true,
+                papeis:true
             }
         });
 
